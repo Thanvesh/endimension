@@ -72,7 +72,7 @@ app.get('/books/:id', (req, res) => {
 app.put('/books/:id', (req, res) => {
     const { name,img,summary} = req.body;
     const id = req.params.id;
-    db.run('UPDATE books SET name = ?, img = ?, summary = ? WHERE id = ?', [name,img,summary], function(err) {
+    db.run('UPDATE books SET name = ?, img = ?, summary = ? WHERE id = ?', [name,img,summary,id], function(err) {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
