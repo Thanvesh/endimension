@@ -23,12 +23,12 @@ const db = new sqlite3.Database('./database.db', (err) => {
 
 app.post('/books', (req, res) => {
     const { category, name, description, price } = req.body;
-    db.run('INSERT INTO products (category, name, description, price) VALUES (?, ?, ?, ?)', [category, name, description, price], function(err) {
+    db.run('INSERT INTO books (category, name, description, price) VALUES (?, ?, ?, ?)', [category, name, description, price], function(err) {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
         res.json({
-            message: 'Product added successfully',
+            message: 'books added successfully',
             product: {
                 id: this.lastID,
                 category: category,
@@ -42,12 +42,12 @@ app.post('/books', (req, res) => {
 
 // Read all products
 app.get('/books', (req, res) => {
-    db.all('SELECT * FROM products', [], (err, rows) => {
+    db.all('SELECT * FROM books', [], (err, rows) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
         res.json({
-            message: 'Products retrieved successfully',
+            message: 'books retrieved successfully',
             products: rows
         });
     });
@@ -55,7 +55,7 @@ app.get('/books', (req, res) => {
 
 app.get('/books/:id', (req, res) => {
     const id = req.params.id;
-    db.get('SELECT * FROM products WHERE id = ?', [id], (err, row) => {
+    db.get('SELECT * FROM books WHERE id = ?', [id], (err, row) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -63,7 +63,7 @@ app.get('/books/:id', (req, res) => {
             return res.status(404).json({ error: 'Product not found' });
         }
         res.json({
-            message: 'Product retrieved successfully',
+            message: 'Book retrieved successfully',
             product: row
         });
     });
@@ -73,12 +73,12 @@ app.get('/books/:id', (req, res) => {
 app.put('/books/:id', (req, res) => {
     const { category, name, description, price } = req.body;
     const id = req.params.id;
-    db.run('UPDATE products SET category = ?, name = ?, description = ?, price = ? WHERE id = ?', [category, name, description, price, id], function(err) {
+    db.run('UPDATE books SET category = ?, name = ?, description = ?, price = ? WHERE id = ?', [category, name, description, price, id], function(err) {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
         res.json({
-            message: 'Product updated successfully',
+            message: 'book updated successfully',
             id: id
         });
     });
@@ -87,12 +87,12 @@ app.put('/books/:id', (req, res) => {
 // Delete product
 app.delete('/books/:id', (req, res) => {
     const id = req.params.id;
-    db.run('DELETE FROM products WHERE id = ?', id, function(err) {
+    db.run('DELETE FROM books WHERE id = ?', id, function(err) {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
         res.json({
-            message: 'Product deleted successfully',
+            message: 'book deleted successfully',
             id: id
         });
     });
