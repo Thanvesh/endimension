@@ -22,8 +22,8 @@ const db = new sqlite3.Database('./database.db', (err) => {
 // Create product
 
 app.post('/books', (req, res) => {
-    const { category, name, description, price } = req.body;
-    db.run('INSERT INTO books (category, name, description, price) VALUES (?, ?, ?, ?)', [category, name, description, price], function(err) {
+    const {name,img,summary} = req.body;
+    db.run('INSERT INTO books (category, name, description, price) VALUES (?, ?, ?, ?)', [name,img, summary], function(err) {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -31,10 +31,9 @@ app.post('/books', (req, res) => {
             message: 'books added successfully',
             product: {
                 id: this.lastID,
-                category: category,
                 name: name,
-                description: description,
-                price: price
+                img: img,
+                summary:summary,
             }
         });
     });
@@ -48,7 +47,7 @@ app.get('/books', (req, res) => {
         }
         res.json({
             message: 'books retrieved successfully',
-            products: rows
+            books: rows
         });
     });
 });
@@ -64,16 +63,16 @@ app.get('/books/:id', (req, res) => {
         }
         res.json({
             message: 'Book retrieved successfully',
-            product: row
+            book: row
         });
     });
 });
 
 // Update product
 app.put('/books/:id', (req, res) => {
-    const { category, name, description, price } = req.body;
+    const { name,img,summary} = req.body;
     const id = req.params.id;
-    db.run('UPDATE books SET category = ?, name = ?, description = ?, price = ? WHERE id = ?', [category, name, description, price, id], function(err) {
+    db.run('UPDATE books SET name = ?, img = ?, summary = ? WHERE id = ?', [name,img,summary], function(err) {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
