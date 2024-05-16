@@ -23,7 +23,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
 
 app.post('/books', (req, res) => {
     const {name,img,summary} = req.body;
-    db.run('INSERT INTO books (name,img,summary) VALUES (?, ?, ?, ?)', [name,img, summary], function(err) {
+    db.run('INSERT INTO books (name,img,summary) VALUES (?, ?, ?)', [name,img, summary], function(err) {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
