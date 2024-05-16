@@ -21,7 +21,7 @@ const db = new sqlite3.Database('./database.db', (err) => {
 
 // Create product
 
-app.post('/products', (req, res) => {
+app.post('/books', (req, res) => {
     const { category, name, description, price } = req.body;
     db.run('INSERT INTO products (category, name, description, price) VALUES (?, ?, ?, ?)', [category, name, description, price], function(err) {
         if (err) {
@@ -41,7 +41,7 @@ app.post('/products', (req, res) => {
 });
 
 // Read all products
-app.get('/products', (req, res) => {
+app.get('/books', (req, res) => {
     db.all('SELECT * FROM products', [], (err, rows) => {
         if (err) {
             return res.status(500).json({ error: err.message });
@@ -53,7 +53,7 @@ app.get('/products', (req, res) => {
     });
 });
 
-app.get('/products/:id', (req, res) => {
+app.get('/books/:id', (req, res) => {
     const id = req.params.id;
     db.get('SELECT * FROM products WHERE id = ?', [id], (err, row) => {
         if (err) {
@@ -70,7 +70,7 @@ app.get('/products/:id', (req, res) => {
 });
 
 // Update product
-app.put('/products/:id', (req, res) => {
+app.put('/books/:id', (req, res) => {
     const { category, name, description, price } = req.body;
     const id = req.params.id;
     db.run('UPDATE products SET category = ?, name = ?, description = ?, price = ? WHERE id = ?', [category, name, description, price, id], function(err) {
@@ -85,7 +85,7 @@ app.put('/products/:id', (req, res) => {
 });
 
 // Delete product
-app.delete('/products/:id', (req, res) => {
+app.delete('/books/:id', (req, res) => {
     const id = req.params.id;
     db.run('DELETE FROM products WHERE id = ?', id, function(err) {
         if (err) {
